@@ -3,19 +3,19 @@ import { LongQuestion, MultipleChoicesQuestion } from "./types";
 export const generateDummyLongQuestions = (count: number): LongQuestion[] => {
   return Array.from({ length: count }, (_, i) => ({
     type: "longQuestion",
-    questionText: `This is the question text for dummy question number ${
+    questionText: `これはダミー問題${
       i + 1
-    }. It can be a bit long to see how the text wrapping works.`,
-    answer: `Answer ${i + 1}`,
+    }の質問テキストです。テキストの折り返しがどのように機能するかを確認するために、少し長くなることがあります。`,
+    answer: `答え ${i + 1}`,
   }));
 };
 
 export const generateDummyMultipleChoicesQuestions = (count: number): MultipleChoicesQuestion[] => {
   const sampleChoices = [
-    ["Apple", "Banana", "Orange", "Grape"],
-    ["Red", "Green", "Blue", "Yellow"],
-    ["Dog", "Cat", "Bird", "Fish"],
-    ["Paris", "London", "New York", "Tokyo"],
+    ["ありがとうございます", "こんにちは", "さようなら", "こんばんは"],
+    ["赤", "緑", "青", "黄"],
+    ["犬", "猫", "鳥", "魚"],
+    ["北海道", "東京都", "大阪府", "福岡県"],
   ];
 
   return Array.from({ length: count }, (_, i) => {
@@ -23,9 +23,9 @@ export const generateDummyMultipleChoicesQuestions = (count: number): MultipleCh
 
     return {
       type: "MultipleChoices",
-      questionText: `This is a multiple choice question, number ${
+      questionText: `これは選択問題${
         i + 1
-      }. Please select the best option. The text can be quite long to test wrapping.`,
+      }です。最適な選択肢を選んでください。テキストは折り返しをテストするために非常に長くなることがあります。`,
       choices: [...choices],
       answer: choices[0],
     };

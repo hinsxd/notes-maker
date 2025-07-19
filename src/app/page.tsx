@@ -16,14 +16,14 @@ const Page = () => {
 
     const section1: Section = {
       type: "section",
-      description: "Section 1: Long Answer Questions",
+      description: "セクション1：長文回答問題",
       exampleQuestions: generateDummyLongQuestions(2),
       questions: longQuestions,
     };
 
     const section2: Section = {
       type: "section",
-      description: "Section 2: Multiple Choice Questions",
+      description: "セクション2：多肢選択問題",
       exampleQuestions: [generateDummyMultipleChoicesQuestions(1)[0]],
       questions: mcQuestions,
     };
@@ -36,17 +36,17 @@ const Page = () => {
 
   return (
     <div className="p-8">
-      <h1 className="mb-4 text-2xl font-bold">PDF Generation Demo</h1>
+      <h1 className="mb-4 text-2xl font-bold">PDF生成デモ</h1>
       <div className="space-x-4">
         <button
           onClick={() => handleGenerateMixedVersion(false)}
           className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
-          Generate Student Version (Sections)
+          生徒用バージョンを生成（セクション）
         </button>
         <button
           onClick={() => handleGenerateMixedVersion(true)}
           className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600">
-          Generate Teacher Version (Sections)
+          教師用バージョンを生成（セクション）
         </button>
       </div>
     </div>

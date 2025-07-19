@@ -1,4 +1,7 @@
 import { createPageElement } from "./createPageElement";
+import { font as NotoSerifJPBold } from "./fonts/NotoSerifJP-Bold-normal";
+import { font as NotoSerifJPMedium } from "./fonts/NotoSerifJP-Medium-normal";
+import { font as NotoSerifJPRegular } from "./fonts/NotoSerifJP-Regular-normal";
 import { DocumentItem, FONT_SIZE, GeneratePdfOptions, PAGE_MARGIN } from "./types";
 import { jsPDF } from "jspdf";
 
@@ -13,6 +16,17 @@ class PdfGenerator {
     this.doc = new jsPDF();
     this.options = options;
     this.doc.setFontSize(FONT_SIZE);
+
+    this.doc.addFileToVFS("NotoSerifJP-Regular-normal.ttf", NotoSerifJPRegular);
+    this.doc.addFileToVFS("NotoSerifJP-Medium-normal.ttf", NotoSerifJPMedium);
+    this.doc.addFileToVFS("NotoSerifJP-Bold-normal.ttf", NotoSerifJPBold);
+
+    this.doc.addFont("NotoSerifJP-Regular-normal.ttf", "NotoSerifJP", "normal");
+    this.doc.addFont("NotoSerifJP-Medium-normal.ttf", "NotoSerifJP", "medium");
+    this.doc.addFont("NotoSerifJP-Bold-normal.ttf", "NotoSerifJP", "bold");
+
+    this.doc.setFont("NotoSerifJP");
+    console.log(this.doc.getFontList());
   }
 
   generate(items: DocumentItem[]) {
@@ -23,7 +37,7 @@ class PdfGenerator {
       y = element.render(y);
     });
 
-    this.doc.save("student-exercises.pdf");
+    this.doc.save("練習問題.pdf");
   }
 }
 
