@@ -27,6 +27,7 @@ export default [
   },
   pluginJs.configs.recommended, // ? https://github.com/eslint/eslint
   importPlugin.flatConfigs.recommended, // ? https://github.com/import-js/eslint-plugin-import
+  importPlugin.flatConfigs.typescript, // ? https://github.com/import-js/eslint-plugin-import
   ...tseslint.configs.recommended, // ? https://github.com/typescript-eslint/typescript-eslint
   pluginPromise.configs["flat/recommended"], // ? https://github.com/eslint-community/eslint-plugin-promise
   pluginReact.configs.flat.recommended, // ? https://github.com/jsx-eslint/eslint-plugin-react
@@ -49,47 +50,6 @@ export default [
       "object-shorthand": "warn",
       "prefer-destructuring": ["error", { object: true, array: false }],
       "import/newline-after-import": ["warn", { count: 1 }],
-      // 'import/order': [
-      //     'warn',
-      //     {
-      //         pathGroupsExcludedImportTypes: ['builtin'],
-      //         groups: [
-      //             'builtin',
-      //             'external',
-      //             'internal',
-      //             'unknown',
-      //             'parent',
-      //             'sibling',
-      //             'index',
-      //             'object',
-      //             'type'
-      //         ],
-      //         'newlines-between': 'always',
-      //         distinctGroup: true,
-      //         named: {
-      //             enabled: true,
-      //             types: 'types-last'
-      //         },
-      //         pathGroups: [
-      //             {
-      //                 group: 'internal',
-      //                 pattern: '@/**'
-      //             },
-
-      //             {
-      //                 group: 'builtin',
-      //                 pattern: 'react',
-      //                 position: 'before'
-      //             }
-      //         ],
-      //         alphabetize: {
-      //             order: 'asc' /* sort in ascending order. Options: ['ignore', 'asc', 'desc'] */,
-      //             caseInsensitive: true /* ignore case. Options: [true, false] */
-      //         },
-
-      //         warnOnUnassignedImports: false
-      //     }
-      // ]
     },
   },
   // ! ===================== DISCLAIMER =====================
