@@ -1,37 +1,39 @@
 "use client";
 
-import {
-  DocumentItem,
-  Section,
-  generateDummyLongQuestions,
-  generateDummyMultipleChoicesQuestions,
-  generatePdf,
-} from "../lib/pdf";
+import { useState } from "react";
 
 const Page = () => {
-  const handleGenerateMixedVersion = (isAnswerMode: boolean) => {
-    console.log("here2");
-    const longQuestions = generateDummyLongQuestions(11);
-    const mcQuestions = generateDummyMultipleChoicesQuestions(8);
+  const [isGenerating, setIsGenerating] = useState(false);
 
-    const section1: Section = {
-      type: "section",
-      description: "セクション1：長文回答問題",
-      exampleQuestions: generateDummyLongQuestions(2),
-      questions: longQuestions,
-    };
+  const generate = async (isAnswerMode: boolean) => {
+    setIsGenerating(true);
+    try {
+      const response = await fetch("/api/generate-pdf", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ isAnswerMode }),
+      });
 
-    const section2: Section = {
-      type: "section",
-      description: "セクション2：多肢選択問題",
-      exampleQuestions: [generateDummyMultipleChoicesQuestions(1)[0]],
-      questions: mcQuestions,
-    };
+      if (!response.ok) {
+        throw new Error("PDF generation failed");
+      }
 
-    const standaloneQuestion = generateDummyLongQuestions(1)[0];
-
-    const allItems: DocumentItem[] = [section1, section2, standaloneQuestion];
-    generatePdf(allItems, { isAnswerMode });
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "output.pdf";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    } catch (error) {
+      console.error(error);
+      alert("PDFの生成に失敗しました。");
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -39,14 +41,16 @@ const Page = () => {
       <h1 className="mb-4 text-2xl font-bold">PDF生成デモ</h1>
       <div className="space-x-4">
         <button
-          onClick={() => handleGenerateMixedVersion(false)}
-          className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
-          生徒用バージョンを生成（セクション）
+          onClick={() => generate(false)}
+          className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 disabled:opacity-50"
+          disabled={isGenerating}>
+          {isGenerating ? "生成中..." : "生徒用バージョンを生成（セクション）"}
         </button>
         <button
-          onClick={() => handleGenerateMixedVersion(true)}
-          className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600">
-          教師用バージョンを生成（セクション）
+          onClick={() => generate(true)}
+          className="rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600 disabled:opacity-50"
+          disabled={isGenerating}>
+          {isGenerating ? "生成中..." : "教師用バージョンを生成（セクション）"}
         </button>
       </div>
     </div>

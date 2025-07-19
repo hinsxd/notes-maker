@@ -37,11 +37,12 @@ class PdfGenerator {
       y = element.render(y);
     });
 
-    this.doc.save("練習問題.pdf");
+    return this.doc.output("arraybuffer");
   }
 }
 
 export const generatePdf = (items: DocumentItem[], options: GeneratePdfOptions) => {
   const generator = new PdfGenerator(options);
-  generator.generate(items);
+
+  return generator.generate(items);
 };
