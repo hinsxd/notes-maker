@@ -5,7 +5,6 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
 import pluginPromise from 'eslint-plugin-promise';
 import pluginReact from 'eslint-plugin-react';
-import tailwind from 'eslint-plugin-tailwindcss';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -33,7 +32,6 @@ export default [
     pluginReact.configs.flat.recommended, // ? https://github.com/jsx-eslint/eslint-plugin-react
     pluginReact.configs.flat['jsx-runtime'], // ? https://github.com/jsx-eslint/eslint-plugin-react
     eslintConfigPrettier, // ? https://github.com/prettier/eslint-config-prettier
-    ...tailwind.configs['flat/recommended'], // ? https://github.com/francoismassart/eslint-plugin-tailwindcss
     {
         rules: {
             'no-unused-vars': 'off',
@@ -47,7 +45,51 @@ export default [
             'tailwindcss/no-custom-classname': 'off',
             'tailwindcss/migration-from-tailwind-2': 'off',
             'import/no-unresolved': 'off',
-            'import/no-named-as-default': 'off'
+            'import/no-named-as-default': 'off',
+            'object-shorthand': 'warn',
+            'prefer-destructuring': ['error', { object: true, array: false }],
+            'import/newline-after-import': ['warn', { count: 1 }]
+            // 'import/order': [
+            //     'warn',
+            //     {
+            //         pathGroupsExcludedImportTypes: ['builtin'],
+            //         groups: [
+            //             'builtin',
+            //             'external',
+            //             'internal',
+            //             'unknown',
+            //             'parent',
+            //             'sibling',
+            //             'index',
+            //             'object',
+            //             'type'
+            //         ],
+            //         'newlines-between': 'always',
+            //         distinctGroup: true,
+            //         named: {
+            //             enabled: true,
+            //             types: 'types-last'
+            //         },
+            //         pathGroups: [
+            //             {
+            //                 group: 'internal',
+            //                 pattern: '@/**'
+            //             },
+
+            //             {
+            //                 group: 'builtin',
+            //                 pattern: 'react',
+            //                 position: 'before'
+            //             }
+            //         ],
+            //         alphabetize: {
+            //             order: 'asc' /* sort in ascending order. Options: ['ignore', 'asc', 'desc'] */,
+            //             caseInsensitive: true /* ignore case. Options: [true, false] */
+            //         },
+
+            //         warnOnUnassignedImports: false
+            //     }
+            // ]
         }
     },
     // ! ===================== DISCLAIMER =====================

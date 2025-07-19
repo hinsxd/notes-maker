@@ -1,0 +1,13 @@
+# Do lint and format check on all push
+
+name: Check
+
+on:
+  push:
+    branches:
+      - **
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    
