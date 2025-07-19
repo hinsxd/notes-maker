@@ -18,6 +18,7 @@ export class LongQuestionElement extends PageElement {
   }
 
   render(y: number): number {
+    y = this.addPageIfNeeded(y, this.calculateRequiredHeight());
     const questionLines = this.doc.splitTextToSize(this.question.questionText, this.pageWidth - PAGE_MARGIN * 2);
 
     this.doc.text(questionLines, PAGE_MARGIN, y);
@@ -35,9 +36,5 @@ export class LongQuestionElement extends PageElement {
     y += LINE_HEIGHT * 2;
 
     return y;
-  }
-
-  getElements(): PageElement[] {
-    return [this];
   }
 }

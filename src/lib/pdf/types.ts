@@ -48,14 +48,25 @@ export abstract class PageElement {
   protected doc: jsPDF;
   protected options: GeneratePdfOptions;
   protected pageWidth: number;
+  protected pageHeight: number;
 
   constructor(doc: jsPDF, options: GeneratePdfOptions) {
     this.doc = doc;
     this.options = options;
     this.pageWidth = doc.internal.pageSize.getWidth();
+    this.pageHeight = doc.internal.pageSize.getHeight();
+  }
+
+  protected addPageIfNeeded(y: number, requiredHeight: number): number {
+    if (y + requiredHeight > this.pageHeight - PAGE_MARGIN) {
+      this.doc.addPage();
+
+      return PAGE_MARGIN;
+    }
+
+    return y;
   }
 
   abstract calculateRequiredHeight(): number;
   abstract render(y: number): number; // returns new y
-  abstract getElements(): PageElement[];
 }

@@ -28,6 +28,7 @@ export class MultipleChoicesQuestionElement extends PageElement {
   }
 
   render(y: number): number {
+    y = this.addPageIfNeeded(y, this.calculateRequiredHeight());
     const blockStartY = y;
     const PADDING_BETWEEN_AREAS = 24;
     const availableWidth = this.pageWidth - PAGE_MARGIN * 2;
@@ -64,9 +65,5 @@ export class MultipleChoicesQuestionElement extends PageElement {
     this.doc.text(choiceLines, PAGE_MARGIN, choicesY);
 
     return y + this.calculateRequiredHeight() + LINE_HEIGHT;
-  }
-
-  getElements(): PageElement[] {
-    return [this];
   }
 }

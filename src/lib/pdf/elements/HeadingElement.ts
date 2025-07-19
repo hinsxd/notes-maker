@@ -14,14 +14,11 @@ export class HeadingElement extends PageElement {
   }
 
   render(y: number): number {
+    y = this.addPageIfNeeded(y, this.calculateRequiredHeight());
     this.doc.setFont(this.doc.getFont().fontName, "bold");
     this.doc.text(this.text, PAGE_MARGIN, y);
     this.doc.setFont(this.doc.getFont().fontName, "normal");
 
     return y + this.calculateRequiredHeight();
-  }
-
-  getElements(): PageElement[] {
-    return [this];
   }
 }
