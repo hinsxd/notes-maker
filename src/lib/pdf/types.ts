@@ -5,7 +5,7 @@ import { jsPDF } from "jspdf";
 // -----------------
 
 export type LongQuestion = {
-  type: "longQuestion";
+  type: "LongQuestion";
   questionText: string;
   answer: string;
 };

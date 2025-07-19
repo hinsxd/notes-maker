@@ -19,7 +19,7 @@ export class SectionElement extends PageElement {
       this.childElements.push(new HeadingElement(doc, options, "例題:"));
       section.exampleQuestions.forEach((q, i) => {
         const questionNumber = `${i + 1}.`;
-        if (q.type === "longQuestion") {
+        if (q.type === "LongQuestion") {
           this.childElements.push(new LongQuestionElement(doc, exampleOptions, q, questionNumber));
         } else if (q.type === "MultipleChoices") {
           this.childElements.push(new MultipleChoicesQuestionElement(doc, exampleOptions, q, questionNumber));
@@ -31,7 +31,7 @@ export class SectionElement extends PageElement {
       this.childElements.push(new HeadingElement(doc, options, "問題:"));
       section.questions.forEach((q, i) => {
         const questionNumber = `${i + 1}.`;
-        if (q.type === "longQuestion") {
+        if (q.type === "LongQuestion") {
           this.childElements.push(new LongQuestionElement(doc, options, q, questionNumber));
         } else if (q.type === "MultipleChoices") {
           this.childElements.push(new MultipleChoicesQuestionElement(doc, options, q, questionNumber));

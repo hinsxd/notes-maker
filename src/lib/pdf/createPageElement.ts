@@ -6,7 +6,7 @@ import { jsPDF } from "jspdf";
 
 export function createPageElement(doc: jsPDF, options: GeneratePdfOptions, item: DocumentItem): PageElement {
   switch (item.type) {
-    case "longQuestion":
+    case "LongQuestion":
       return new LongQuestionElement(doc, options, item);
     case "MultipleChoices":
       return new MultipleChoicesQuestionElement(doc, options, item);

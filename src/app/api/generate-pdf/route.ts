@@ -1,43 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import {
-  DocumentItem,
-  Section,
-  generateDummyLongQuestions,
-  generateDummyMultipleChoicesQuestions,
-  generatePdf,
-} from "../../../lib/pdf";
+import { generatePdf } from "@/lib/pdf";
+import { pdfFormSchema } from "@/lib/pdf/validation";
+
+import { z } from "zod";
 
 export async function POST(req: NextRequest) {
-  const { isAnswerMode } = await req.json();
+  try {
+    const body = await req.json();
 
-  console.log("here2");
-  const longQuestions = generateDummyLongQuestions(11);
-  const mcQuestions = generateDummyMultipleChoicesQuestions(8);
+    // Validate the request body
+    const validatedData = pdfFormSchema.parse(body);
 
-  const section1: Section = {
-    type: "section",
-    description: "セクション1：長文回答問題",
-    exampleQuestions: generateDummyLongQuestions(2),
-    questions: longQuestions,
-  };
+    // Generate PDF with the provided items
+    const pdfBytes = generatePdf(validatedData.items, {
+      isAnswerMode: validatedData.isAnswerMode,
+    });
 
-  const section2: Section = {
-    type: "section",
-    description: "セクション2：多肢選択問題",
-    exampleQuestions: [generateDummyMultipleChoicesQuestions(1)[0]],
-    questions: mcQuestions,
-  };
+    return new NextResponse(pdfBytes, {
+      headers: {
+        "Content-Type": "application/pdf",
+        "Content-Disposition": "attachment; filename=output.pdf",
+      },
+    });
+  } catch (error) {
+    console.error("PDF generation error:", error);
 
-  const standaloneQuestion = generateDummyLongQuestions(1)[0];
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ error: "Invalid request data", details: error.issues }, { status: 400 });
+    }
 
-  const allItems: DocumentItem[] = [section1, section2, standaloneQuestion];
-  const pdfBytes = generatePdf(allItems, { isAnswerMode });
-
-  return new NextResponse(pdfBytes, {
-    headers: {
-      "Content-Type": "application/pdf",
-      "Content-Disposition": "attachment; filename=output.pdf",
-    },
-  });
+    return NextResponse.json({ error: "Failed to generate PDF" }, { status: 500 });
+  }
 }

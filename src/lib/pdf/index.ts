@@ -26,7 +26,6 @@ class PdfGenerator {
     this.doc.addFont("NotoSerifJP-Bold-normal.ttf", "NotoSerifJP", "bold");
 
     this.doc.setFont("NotoSerifJP");
-    console.log(this.doc.getFontList());
   }
 
   generate(items: DocumentItem[]) {

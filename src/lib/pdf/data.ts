@@ -2,7 +2,7 @@ import { LongQuestion, MultipleChoicesQuestion } from "./types";
 
 export const generateDummyLongQuestions = (count: number): LongQuestion[] => {
   return Array.from({ length: count }, (_, i) => ({
-    type: "longQuestion",
+    type: "LongQuestion",
     questionText: `これはダミー問題${
       i + 1
     }の質問テキストです。テキストの折り返しがどのように機能するかを確認するために、少し長くなることがあります。`,
