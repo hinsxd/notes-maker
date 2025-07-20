@@ -1,4 +1,5 @@
 import { GeneratePdfOptions, LINE_HEIGHT, PageElement, Section } from "../types";
+import { FillQuestionElement } from "./FillQuestionElement";
 import { HeadingElement } from "./HeadingElement";
 import { LongQuestionElement } from "./LongQuestionElement";
 import { MultipleChoicesQuestionElement } from "./MultipleChoicesQuestionElement";
@@ -23,6 +24,8 @@ export class SectionElement extends PageElement {
           this.childElements.push(new LongQuestionElement(doc, exampleOptions, q, questionNumber));
         } else if (q.type === "MultipleChoices") {
           this.childElements.push(new MultipleChoicesQuestionElement(doc, exampleOptions, q, questionNumber));
+        } else if (q.type === "Fill") {
+          this.childElements.push(new FillQuestionElement(doc, exampleOptions, q, questionNumber));
         }
       });
     }
@@ -35,6 +38,8 @@ export class SectionElement extends PageElement {
           this.childElements.push(new LongQuestionElement(doc, options, q, questionNumber));
         } else if (q.type === "MultipleChoices") {
           this.childElements.push(new MultipleChoicesQuestionElement(doc, options, q, questionNumber));
+        } else if (q.type === "Fill") {
+          this.childElements.push(new FillQuestionElement(doc, options, q, questionNumber));
         }
       });
     }

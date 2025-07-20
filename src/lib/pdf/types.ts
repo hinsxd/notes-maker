@@ -10,6 +10,12 @@ export type LongQuestion = {
   answer: string;
 };
 
+export type FillQuestion = {
+  type: "Fill";
+  questionText: string;
+  answer: string;
+};
+
 export type MultipleChoicesQuestion = {
   type: "MultipleChoices";
   questionText: string;
@@ -17,7 +23,7 @@ export type MultipleChoicesQuestion = {
   answer: string;
 };
 
-export type Question = LongQuestion | MultipleChoicesQuestion;
+export type Question = LongQuestion | MultipleChoicesQuestion | FillQuestion;
 
 export type Section = {
   type: "section";

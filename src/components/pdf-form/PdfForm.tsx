@@ -99,6 +99,17 @@ export function PdfForm() {
     ]);
   };
 
+  const addFillQuestion = () => {
+    setItems([
+      ...items,
+      {
+        type: "Fill",
+        questionText: "",
+        answer: "",
+      },
+    ]);
+  };
+
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       <Card>
@@ -123,6 +134,10 @@ export function PdfForm() {
                   <Button variant="outline" size="sm" onClick={addStandaloneQuestion}>
                     <Plus className="mr-1 h-3 w-3" />
                     単独問題追加
+                  </Button>
+                  <Button variant="outline" size="sm" onClick={addFillQuestion}>
+                    <Plus className="mr-1 h-3 w-3" />
+                    穴埋め問題追加
                   </Button>
                 </div>
               </div>
@@ -160,6 +175,10 @@ export function PdfForm() {
                     <Button variant="outline" onClick={addStandaloneQuestion}>
                       <Plus className="mr-1 h-3 w-3" />
                       単独問題追加
+                    </Button>
+                    <Button variant="outline" onClick={addFillQuestion}>
+                      <Plus className="mr-1 h-3 w-3" />
+                      穴埋め問題追加
                     </Button>
                   </div>
                 </div>

@@ -1,9 +1,20 @@
 import { z } from "zod";
 
+export const FILL_PLACEHOLDER = "<<>>";
+
 // Question schemas
 export const longQuestionSchema = z.object({
   type: z.literal("LongQuestion"),
   questionText: z.string().min(1, "質問文は必須です"),
+  answer: z.string().min(1, "答えは必須です"),
+});
+
+export const fillQuestionSchema = z.object({
+  type: z.literal("Fill"),
+  questionText: z
+    .string()
+    .min(1, "質問文は必須です")
+    .includes(FILL_PLACEHOLDER, { message: `質問文に"${FILL_PLACEHOLDER}"を含めてください` }),
   answer: z.string().min(1, "答えは必須です"),
 });
 
@@ -14,7 +25,11 @@ export const multipleChoicesQuestionSchema = z.object({
   answer: z.string().min(1, "正解は必須です"),
 });
 
-export const questionSchema = z.discriminatedUnion("type", [longQuestionSchema, multipleChoicesQuestionSchema]);
+export const questionSchema = z.discriminatedUnion("type", [
+  longQuestionSchema,
+  multipleChoicesQuestionSchema,
+  fillQuestionSchema,
+]);
 
 // Section schema
 export const sectionSchema = z.object({

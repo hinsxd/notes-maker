@@ -1,3 +1,4 @@
+import { FillQuestionElement } from "./elements/FillQuestionElement";
 import { LongQuestionElement } from "./elements/LongQuestionElement";
 import { MultipleChoicesQuestionElement } from "./elements/MultipleChoicesQuestionElement";
 import { SectionElement } from "./elements/SectionElement";
@@ -6,6 +7,8 @@ import { jsPDF } from "jspdf";
 
 export function createPageElement(doc: jsPDF, options: GeneratePdfOptions, item: DocumentItem): PageElement {
   switch (item.type) {
+    case "Fill":
+      return new FillQuestionElement(doc, options, item);
     case "LongQuestion":
       return new LongQuestionElement(doc, options, item);
     case "MultipleChoices":

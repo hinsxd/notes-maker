@@ -8,8 +8,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
-import { longQuestionSchema, multipleChoicesQuestionSchema, questionSchema } from "@/lib/pdf/validation";
+import {
+  FILL_PLACEHOLDER,
+  longQuestionSchema,
+  multipleChoicesQuestionSchema,
+  questionSchema,
+} from "@/lib/pdf/validation";
 import { useForm, useStore } from "@tanstack/react-form";
+import { zodValidator } from "@tanstack/zod-form-adapter";
 
 import { Edit, Plus, Save, X } from "lucide-react";
 import { z } from "zod";
@@ -23,12 +29,18 @@ type QuestionFormProps = {
 };
 
 // Helper function to create initial values for each question type
-const createInitialValues = (type: "LongQuestion" | "MultipleChoices") => {
+const createInitialValues = (type: "LongQuestion" | "MultipleChoices" | "Fill") => {
   if (type === "LongQuestion") {
     return {
       type: "LongQuestion" as const,
       questionText: "",
       answer: "",
+    };
+  } else if (type === "Fill") {
+    return {
+      type: "Fill" as const,
+      questionText: `日本の首都は${FILL_PLACEHOLDER}です。`,
+      answer: "東京",
     };
   } else {
     return {
@@ -55,6 +67,9 @@ export function QuestionForm({
       onSubmit(value);
       setIsEditing(false);
     },
+    validators: {
+      onChange: questionSchema,
+    },
   });
 
   // Use useStore for reactivity as per TanStack Form guide
@@ -74,6 +89,7 @@ export function QuestionForm({
       const currentValues = form.state.values;
       const shouldReset =
         (currentType === "LongQuestion" && "choices" in currentValues) ||
+        (currentType === "Fill" && "choices" in currentValues) ||
         (currentType === "MultipleChoices" && !("choices" in currentValues));
 
       if (shouldReset) {
@@ -106,7 +122,13 @@ export function QuestionForm({
           <div className="space-y-2">
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <p className="font-medium">{initialValues.type === "LongQuestion" ? "長文回答" : "多肢選択"}</p>
+                <p className="font-medium">
+                  {initialValues.type === "LongQuestion"
+                    ? "長文回答"
+                    : initialValues.type === "Fill"
+                      ? "穴埋め"
+                      : "多肢選択"}
+                </p>
                 <p className="mt-1 text-sm text-gray-600">{initialValues.questionText}</p>
                 {initialValues.type === "MultipleChoices" && (
                   <div className="mt-2 space-y-1">
@@ -117,7 +139,7 @@ export function QuestionForm({
                     ))}
                   </div>
                 )}
-                {initialValues.type === "LongQuestion" && (
+                {(initialValues.type === "LongQuestion" || initialValues.type === "Fill") && (
                   <p className="mt-2 text-sm text-gray-500">答え: {initialValues.answer}</p>
                 )}
               </div>
@@ -149,8 +171,8 @@ export function QuestionForm({
             <RadioGroup
               value={field.state.value}
               onValueChange={(value) => {
-                if (value === "LongQuestion" || value === "MultipleChoices") {
-                  if (value !== "LongQuestion") form.setFieldValue("choices", []);
+                if (value === "LongQuestion" || value === "MultipleChoices" || value === "Fill") {
+                  if (value !== "MultipleChoices") form.setFieldValue("choices", []);
                   field.handleChange(value);
                 }
               }}>
@@ -162,6 +184,10 @@ export function QuestionForm({
                 <RadioGroupItem value="MultipleChoices" id="MultipleChoices" />
                 <Label htmlFor="MultipleChoices">多肢選択</Label>
               </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="Fill" id="Fill" />
+                <Label htmlFor="Fill">穴埋め</Label>
+              </div>
             </RadioGroup>
           </div>
         )}
@@ -169,16 +195,18 @@ export function QuestionForm({
 
       <form.Field
         name="questionText"
-        validators={{
-          onChange: ({ value }) => {
-            if (!value) return "質問文は必須です";
-
-            return undefined;
-          },
-        }}>
+        // No need for separate validation here as it's handled at the form level
+      >
         {(field) => (
           <div className="space-y-2">
             <Label htmlFor={field.name}>質問文</Label>
+            {questionType === "Fill" && (
+              <p className="text-sm text-gray-500">
+                穴埋め箇所に
+                <code className="mx-1 rounded bg-gray-200 px-1 py-0.5 text-sm">{FILL_PLACEHOLDER}</code>
+                を入力してください。
+              </p>
+            )}
             <Textarea
               id={field.name}
               value={field.state.value}
@@ -197,16 +225,8 @@ export function QuestionForm({
       {questionType === "MultipleChoices" && (
         <form.Field
           name="choices"
-          validators={{
-            onChange: ({ value }) => {
-              if (!Array.isArray(value)) return "選択肢が正しくありません";
-              const choicesArray = value;
-              if (choicesArray.length < 2) return "最低2つの選択肢が必要です";
-              if (choicesArray.some((c) => !c.trim())) return "選択肢は空にできません";
-
-              return undefined;
-            },
-          }}>
+          // No need for separate validation here as it's handled at the form level
+        >
           {(field) => {
             const fieldChoices = Array.isArray(field.state.value) ? field.state.value : ["", ""];
 
@@ -256,67 +276,79 @@ export function QuestionForm({
         </form.Field>
       )}
 
-      <form.Field
-        name="answer"
-        validators={{
-          onChange: ({ value }) => {
-            if (!value) return "答えは必須です";
-
-            return undefined;
-          },
-        }}>
-        {(field) => (
-          <div className="space-y-2">
-            <Label htmlFor={field.name}>{questionType === "MultipleChoices" ? "正解" : "答え"}</Label>
-            {questionType === "MultipleChoices" ? (
-              <RadioGroup value={field.state.value} onValueChange={field.handleChange}>
-                {choices.map((choice, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <RadioGroupItem value={choice} id={`answer-${index}`} disabled={!choice.trim()} />
-                    <Label htmlFor={`answer-${index}`}>{choice || `選択肢 ${index + 1}`}</Label>
-                  </div>
-                ))}
-              </RadioGroup>
-            ) : (
-              <Textarea
+      {(questionType === "LongQuestion" || questionType === "Fill") && (
+        <form.Field
+          name="answer"
+          // No need for separate validation here as it's handled at the form level
+        >
+          {(field) => (
+            <div className="space-y-2">
+              <Label htmlFor={field.name}>答え</Label>
+              <Input
                 id={field.name}
                 value={field.state.value}
                 onChange={(e) => field.handleChange(e.target.value)}
                 onBlur={field.handleBlur}
                 placeholder="答えを入力してください"
-                rows={2}
               />
-            )}
-            {field.state.meta.isTouched && field.state.meta.errors.length > 0 ? (
-              <p className="text-sm text-red-600">{field.state.meta.errors.join(", ")}</p>
-            ) : null}
-          </div>
-        )}
-      </form.Field>
-
-      <div className="flex justify-end gap-2">
-        <Button type="button" variant="outline" onClick={handleCancel}>
-          キャンセル
-        </Button>
-        <form.Subscribe selector={(state) => state.canSubmit}>
-          {(canSubmit) => (
-            <Button
-              type={isNested ? "button" : "submit"}
-              disabled={!canSubmit}
-              onClick={isNested ? () => form.handleSubmit() : undefined}>
-              <Save className="mr-1 h-3 w-3" />
-              {form.state.isSubmitting ? "保存中..." : "保存"}
-            </Button>
+              {field.state.meta.isTouched && field.state.meta.errors.length > 0 ? (
+                <p className="text-sm text-red-600">{field.state.meta.errors.join(", ")}</p>
+              ) : null}
+            </div>
           )}
-        </form.Subscribe>
-      </div>
+        </form.Field>
+      )}
+
+      {questionType === "MultipleChoices" && (
+        <form.Field
+          name="answer"
+          // No need for separate validation here as it's handled at the form level
+        >
+          {(field) => (
+            <div className="space-y-2">
+              <Label>正解</Label>
+              <RadioGroup
+                value={field.state.value}
+                onValueChange={field.handleChange}
+                onBlur={field.handleBlur}
+                className="space-y-1">
+                {(choices ?? []).map((choice, index) => (
+                  <div key={index} className="flex items-center space-x-2">
+                    <RadioGroupItem value={choice} id={`choice-answer-${index}`} />
+                    <Label htmlFor={`choice-answer-${index}`}>{choice}</Label>
+                  </div>
+                ))}
+              </RadioGroup>
+              {field.state.meta.isTouched && field.state.meta.errors.length > 0 ? (
+                <p className="text-sm text-red-600">{field.state.meta.errors.join(", ")}</p>
+              ) : null}
+            </div>
+          )}
+        </form.Field>
+      )}
     </div>
   );
+
+  const cardTitle = isNested ? "" : "問題";
 
   return (
     <Card>
       <CardContent className="pt-6">
-        {isNested ? formContent : <form onSubmit={handleFormSubmit}>{formContent}</form>}
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            {cardTitle && <h3 className="text-lg font-medium">{cardTitle}</h3>}
+          </div>
+          {formContent}
+          <div className="flex justify-end gap-2 border-t pt-4">
+            <Button type="button" variant="ghost" onClick={handleCancel}>
+              キャンセル
+            </Button>
+            <Button type="button" onClick={handleFormSubmit}>
+              <Save className="mr-2 h-4 w-4" />
+              保存
+            </Button>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );

@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { questionSchema, sectionSchema } from "@/lib/pdf/validation";
+import { FILL_PLACEHOLDER, questionSchema, sectionSchema } from "@/lib/pdf/validation";
 
 import { QuestionForm } from "./QuestionForm";
 import { Edit, FileText, Plus, Save } from "lucide-react";
@@ -56,9 +56,9 @@ export function SectionForm({ initialValues, onSubmit, onDelete, showDeleteButto
       exampleQuestions: [
         ...section.exampleQuestions,
         {
-          type: "LongQuestion",
-          questionText: "",
-          answer: "",
+          type: "Fill",
+          questionText: `日本の首都は${FILL_PLACEHOLDER}です。`,
+          answer: "東京",
         },
       ],
     });
@@ -71,9 +71,9 @@ export function SectionForm({ initialValues, onSubmit, onDelete, showDeleteButto
       questions: [
         ...section.questions,
         {
-          type: "LongQuestion",
-          questionText: "",
-          answer: "",
+          type: "Fill",
+          questionText: `日本の首都は${FILL_PLACEHOLDER}です。`,
+          answer: "東京",
         },
       ],
     });
