@@ -4,6 +4,12 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { documentItemSchema, pdfFormSchema } from "@/lib/pdf/validation";
@@ -126,20 +132,19 @@ export function PdfForm() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-medium">項目一覧 ({items.length})</h3>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={addSection}>
-                    <Plus className="mr-1 h-3 w-3" />
-                    セクション追加
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={addStandaloneQuestion}>
-                    <Plus className="mr-1 h-3 w-3" />
-                    単独問題追加
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={addFillQuestion}>
-                    <Plus className="mr-1 h-3 w-3" />
-                    穴埋め問題追加
-                  </Button>
-                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" size="sm">
+                      <Plus className="mr-1 h-3 w-3" />
+                      項目追加
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem onClick={addSection}>セクション</DropdownMenuItem>
+                    <DropdownMenuItem onClick={addStandaloneQuestion}>長文問題</DropdownMenuItem>
+                    <DropdownMenuItem onClick={addFillQuestion}>穴埋め問題</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
 
               {items.length > 0 ? (
@@ -167,20 +172,19 @@ export function PdfForm() {
               ) : (
                 <div className="rounded-lg border-2 border-dashed border-gray-300 py-8 text-center text-gray-500">
                   <p className="mb-4">まだ項目がありません</p>
-                  <div className="flex justify-center gap-2">
-                    <Button variant="outline" onClick={addSection}>
-                      <Plus className="mr-1 h-3 w-3" />
-                      セクション追加
-                    </Button>
-                    <Button variant="outline" onClick={addStandaloneQuestion}>
-                      <Plus className="mr-1 h-3 w-3" />
-                      単独問題追加
-                    </Button>
-                    <Button variant="outline" onClick={addFillQuestion}>
-                      <Plus className="mr-1 h-3 w-3" />
-                      穴埋め問題追加
-                    </Button>
-                  </div>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline">
+                        <Plus className="mr-1 h-3 w-3" />
+                        項目追加
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem onClick={addSection}>セクション</DropdownMenuItem>
+                      <DropdownMenuItem onClick={addStandaloneQuestion}>長文問題</DropdownMenuItem>
+                      <DropdownMenuItem onClick={addFillQuestion}>穴埋め問題</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               )}
             </div>

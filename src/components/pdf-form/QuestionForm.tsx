@@ -215,9 +215,15 @@ export function QuestionForm({
               placeholder="質問を入力してください"
               rows={3}
             />
-            {field.state.meta.isTouched && field.state.meta.errors.length > 0 ? (
-              <p className="text-sm text-red-600">{field.state.meta.errors.join(", ")}</p>
-            ) : null}
+            {field.state.meta.isTouched &&
+              field.state.meta.errors.map(
+                (error) =>
+                  error && (
+                    <p key={error.message} className="text-sm text-red-600">
+                      {error.message}
+                    </p>
+                  ),
+              )}
           </div>
         )}
       </form.Field>
@@ -267,9 +273,15 @@ export function QuestionForm({
                   <Plus className="mr-2 h-4 w-4" />
                   選択肢を追加
                 </Button>
-                {field.state.meta.isTouched && field.state.meta.errors.length > 0 ? (
-                  <p className="text-sm text-red-600">{field.state.meta.errors.join(", ")}</p>
-                ) : null}
+                {field.state.meta.isTouched &&
+                  field.state.meta.errors.map(
+                    (error) =>
+                      error && (
+                        <p key={error.message} className="text-sm text-red-600">
+                          {error.message}
+                        </p>
+                      ),
+                  )}
               </div>
             );
           }}
@@ -291,9 +303,15 @@ export function QuestionForm({
                 onBlur={field.handleBlur}
                 placeholder="答えを入力してください"
               />
-              {field.state.meta.isTouched && field.state.meta.errors.length > 0 ? (
-                <p className="text-sm text-red-600">{field.state.meta.errors.join(", ")}</p>
-              ) : null}
+              {field.state.meta.isTouched &&
+                field.state.meta.errors.map(
+                  (error) =>
+                    error && (
+                      <p key={error.message} className="text-sm text-red-600">
+                        {error.message}
+                      </p>
+                    ),
+                )}
             </div>
           )}
         </form.Field>
@@ -319,9 +337,15 @@ export function QuestionForm({
                   </div>
                 ))}
               </RadioGroup>
-              {field.state.meta.isTouched && field.state.meta.errors.length > 0 ? (
-                <p className="text-sm text-red-600">{field.state.meta.errors.join(", ")}</p>
-              ) : null}
+              {field.state.meta.isTouched &&
+                field.state.meta.errors.map(
+                  (error) =>
+                    error && (
+                      <p key={error.message} className="text-sm text-red-600">
+                        {error.message}
+                      </p>
+                    ),
+                )}
             </div>
           )}
         </form.Field>

@@ -4,6 +4,12 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -49,34 +55,31 @@ export function SectionForm({ initialValues, onSubmit, onDelete, showDeleteButto
     }
   };
 
-  const addExampleQuestion = () => {
-    // Add a new empty question to examples array
-    setSection({
-      ...section,
-      exampleQuestions: [
-        ...section.exampleQuestions,
-        {
-          type: "Fill",
+  const addQuestion = (
+    questionType: "LongQuestion" | "MultipleChoices" | "Fill",
+    target: "exampleQuestions" | "questions",
+  ) => {
+    let newQuestion;
+    switch (questionType) {
+      case "LongQuestion":
+        newQuestion = { type: "LongQuestion" as const, questionText: "", answer: "" };
+        break;
+      case "Fill":
+        newQuestion = {
+          type: "Fill" as const,
           questionText: `日本の首都は${FILL_PLACEHOLDER}です。`,
           answer: "東京",
-        },
-      ],
-    });
-  };
+        };
+        break;
+      case "MultipleChoices":
+        newQuestion = { type: "MultipleChoices" as const, questionText: "", choices: ["", ""], answer: "" };
+        break;
+    }
 
-  const addRegularQuestion = () => {
-    // Add a new empty question to questions array
-    setSection({
-      ...section,
-      questions: [
-        ...section.questions,
-        {
-          type: "Fill",
-          questionText: `日本の首都は${FILL_PLACEHOLDER}です。`,
-          answer: "東京",
-        },
-      ],
-    });
+    setSection((prevSection) => ({
+      ...prevSection,
+      [target]: [...prevSection[target], newQuestion],
+    }));
   };
 
   const updateExampleQuestion = (index: number, question: z.infer<typeof questionSchema>) => {
@@ -199,10 +202,25 @@ export function SectionForm({ initialValues, onSubmit, onDelete, showDeleteButto
                     showDeleteButton={true}
                   />
                 ))}
-                <Button type="button" variant="outline" onClick={addExampleQuestion} className="w-full">
-                  <Plus className="mr-2 h-4 w-4" />
-                  例題を追加
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="w-full">
+                      <Plus className="mr-2 h-4 w-4" />
+                      例題を追加
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem onClick={() => addQuestion("LongQuestion", "exampleQuestions")}>
+                      長文問題
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => addQuestion("Fill", "exampleQuestions")}>
+                      穴埋め問題
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => addQuestion("MultipleChoices", "exampleQuestions")}>
+                      多肢選択問題
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </TabsContent>
 
               <TabsContent value="questions" className="space-y-4">
@@ -216,10 +234,23 @@ export function SectionForm({ initialValues, onSubmit, onDelete, showDeleteButto
                     showDeleteButton={true}
                   />
                 ))}
-                <Button type="button" variant="outline" onClick={addRegularQuestion} className="w-full">
-                  <Plus className="mr-2 h-4 w-4" />
-                  問題を追加
-                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="w-full">
+                      <Plus className="mr-2 h-4 w-4" />
+                      問題を追加
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem onClick={() => addQuestion("LongQuestion", "questions")}>
+                      長文問題
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => addQuestion("Fill", "questions")}>穴埋め問題</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => addQuestion("MultipleChoices", "questions")}>
+                      多肢選択問題
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </TabsContent>
             </Tabs>
 

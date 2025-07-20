@@ -28,8 +28,8 @@ export class FillQuestionElement extends QuestionElement<FillQuestion> {
     const { questionText, answer } = this.question;
 
     const displayText = this.options.isAnswerMode
-      ? questionText.replace(FILL_PLACEHOLDER, answer)
-      : questionText.replace(FILL_PLACEHOLDER, "(    )");
+      ? questionText.replace(FILL_PLACEHOLDER, ` (   ${answer}   ) `)
+      : questionText.replace(FILL_PLACEHOLDER, " (        ) ");
 
     const questionLines = this.doc.splitTextToSize(
       displayText,
@@ -38,10 +38,6 @@ export class FillQuestionElement extends QuestionElement<FillQuestion> {
 
     if (this.questionNumber) {
       this.doc.text(this.questionNumber, PAGE_MARGIN, y);
-    }
-
-    if (this.options.isAnswerMode) {
-      this.doc.setTextColor(255, 0, 0);
     }
 
     this.doc.text(questionLines, this.questionStartX, y);
