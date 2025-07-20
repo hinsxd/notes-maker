@@ -75,18 +75,14 @@ export abstract class PageElement {
 export abstract class QuestionElement<Q extends Question> extends PageElement {
   protected questionNumberWidth: number;
   protected questionStartX: number;
+  protected question: Q;
+  protected questionNumber?: string;
 
-  constructor(
-    protected doc: jsPDF,
-    protected options: GeneratePdfOptions,
-    protected question: Q,
-    protected questionNumber?: string,
-  ) {
+  constructor(doc: jsPDF, options: GeneratePdfOptions, question: Q, questionNumber?: string) {
     super(doc, options);
     this.questionNumberWidth = questionNumber ? QUESTION_NUMBER_WIDTH : 0;
     this.questionStartX = PAGE_MARGIN + this.questionNumberWidth;
+    this.question = question;
+    this.questionNumber = questionNumber;
   }
-
-  abstract calculateRequiredHeight(): number;
-  abstract render(y: number): number;
 }
