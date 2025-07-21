@@ -175,7 +175,8 @@ export function QuestionForm({
                   if (value !== "MultipleChoices") form.setFieldValue("choices", []);
                   field.handleChange(value);
                 }
-              }}>
+              }}
+            >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="LongQuestion" id="LongQuestion" />
                 <Label htmlFor="LongQuestion">長文回答</Label>
@@ -258,7 +259,8 @@ export function QuestionForm({
                         const newChoices = fieldChoices.filter((_, i) => i !== index);
                         field.handleChange(newChoices);
                       }}
-                      disabled={fieldChoices.length <= 2}>
+                      disabled={fieldChoices.length <= 2}
+                    >
                       <X className="h-4 w-4" />
                     </Button>
                   </div>
@@ -269,7 +271,8 @@ export function QuestionForm({
                   size="sm"
                   onClick={() => {
                     field.handleChange([...fieldChoices, ""]);
-                  }}>
+                  }}
+                >
                   <Plus className="mr-2 h-4 w-4" />
                   選択肢を追加
                 </Button>
@@ -329,7 +332,8 @@ export function QuestionForm({
                 value={field.state.value}
                 onValueChange={field.handleChange}
                 onBlur={field.handleBlur}
-                className="space-y-1">
+                className="space-y-1"
+              >
                 {(choices ?? []).map((choice, index) => (
                   <div key={index} className="flex items-center space-x-2">
                     <RadioGroupItem value={choice} id={`choice-answer-${index}`} />

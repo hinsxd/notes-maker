@@ -4,17 +4,12 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { documentItemSchema, pdfFormSchema } from "@/lib/pdf/validation";
 import { useMutation } from "@tanstack/react-query";
 
+import { AddItemDropdown } from "./AddItemDropdown";
 import { QuestionForm } from "./QuestionForm";
 import { SectionForm } from "./SectionForm";
 import { Download, Loader2, Plus } from "lucide-react";
@@ -116,6 +111,18 @@ export function PdfForm() {
     ]);
   };
 
+  const addMultipleChoicesQuestion = () => {
+    setItems([
+      ...items,
+      {
+        type: "MultipleChoices",
+        questionText: "",
+        choices: [],
+        answer: "",
+      },
+    ]);
+  };
+
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       <Card>
@@ -132,19 +139,18 @@ export function PdfForm() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-medium">項目一覧 ({items.length})</h3>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      <Plus className="mr-1 h-3 w-3" />
-                      項目追加
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem onClick={addSection}>セクション</DropdownMenuItem>
-                    <DropdownMenuItem onClick={addStandaloneQuestion}>長文問題</DropdownMenuItem>
-                    <DropdownMenuItem onClick={addFillQuestion}>穴埋め問題</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                {/* Add section */}
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" onClick={addSection}>
+                    <Plus className="mr-1 h-3 w-3" />
+                    セクション追加
+                  </Button>
+                  <AddItemDropdown
+                    onAddLongQuestion={addStandaloneQuestion}
+                    onAddFillQuestion={addFillQuestion}
+                    onAddMultipleChoicesQuestion={addMultipleChoicesQuestion}
+                  ></AddItemDropdown>
+                </div>
               </div>
 
               {items.length > 0 ? (
@@ -172,19 +178,17 @@ export function PdfForm() {
               ) : (
                 <div className="rounded-lg border-2 border-dashed border-gray-300 py-8 text-center text-gray-500">
                   <p className="mb-4">まだ項目がありません</p>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="outline">
-                        <Plus className="mr-1 h-3 w-3" />
-                        項目追加
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem onClick={addSection}>セクション</DropdownMenuItem>
-                      <DropdownMenuItem onClick={addStandaloneQuestion}>長文問題</DropdownMenuItem>
-                      <DropdownMenuItem onClick={addFillQuestion}>穴埋め問題</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                  <div className="flex justify-center gap-2">
+                    <Button variant="outline" size="sm" onClick={addSection}>
+                      <Plus className="mr-1 h-3 w-3" />
+                      セクション追加
+                    </Button>
+                    <AddItemDropdown
+                      onAddLongQuestion={addStandaloneQuestion}
+                      onAddFillQuestion={addFillQuestion}
+                      onAddMultipleChoicesQuestion={addMultipleChoicesQuestion}
+                    ></AddItemDropdown>
+                  </div>
                 </div>
               )}
             </div>
