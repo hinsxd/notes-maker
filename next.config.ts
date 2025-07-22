@@ -1,3 +1,4 @@
+import { withPayload } from "@payloadcms/next/withPayload";
 import type { NextConfig } from "next";
 
 import initializeBundleAnalyzer from "@next/bundle-analyzer";
@@ -12,4 +13,4 @@ const nextConfig: NextConfig = {
   // output: 'standalone'
 };
 
-export default withBundleAnalyzer(nextConfig);
+export default withPayload(withBundleAnalyzer(nextConfig));
