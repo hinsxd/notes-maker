@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     const validatedData = pdfFormSchema.parse(body);
 
     // Generate PDF with the provided items
-    const pdfBytes = generatePdf(validatedData.items, {
+    const pdfBytes = generatePdf(validatedData, {
       isAnswerMode: validatedData.isAnswerMode,
     });
 

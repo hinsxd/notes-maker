@@ -44,6 +44,7 @@ export const documentItemSchema = z.discriminatedUnion("type", [questionSchema, 
 
 // Form schema
 export const pdfFormSchema = z.object({
+  title: z.string().min(1, "タイトルは必須です"),
   items: z.array(documentItemSchema).min(1, "最低1つの項目が必要です"),
   isAnswerMode: z.boolean(),
 });

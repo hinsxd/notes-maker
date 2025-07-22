@@ -1,8 +1,10 @@
+import { PdfFormData } from "@/lib/pdf/validation";
+
 import { createPageElement } from "./createPageElement";
 import { font as NotoSerifJPBold } from "./fonts/NotoSerifJP-Bold-normal";
 import { font as NotoSerifJPMedium } from "./fonts/NotoSerifJP-Medium-normal";
 import { font as NotoSerifJPRegular } from "./fonts/NotoSerifJP-Regular-normal";
-import { DocumentItem, FONT_SIZE, GeneratePdfOptions, PAGE_MARGIN } from "./types";
+import { DocumentItem, FONT_SIZE, GeneratePdfOptions, LINE_HEIGHT, PAGE_MARGIN } from "./types";
 import { jsPDF } from "jspdf";
 
 export * from "./types";
@@ -28,10 +30,26 @@ class PdfGenerator {
     this.doc.setFont("NotoSerifJP");
   }
 
-  generate(items: DocumentItem[]) {
+  renderTitle(title: string, y: number): number {
+    this.doc.setFontSize(FONT_SIZE * 1.5);
+    this.doc.setFont(this.doc.getFont().fontName, "bold");
+
+    this.doc.text(title, PAGE_MARGIN, y);
+
+    this.doc.setFontSize(FONT_SIZE);
+    this.doc.setFont(this.doc.getFont().fontName, "normal");
+
+    return y + LINE_HEIGHT * 1.5;
+  }
+
+  generate(data: PdfFormData) {
+    const { items, title } = data;
+    let y = PAGE_MARGIN;
+
+    y = this.renderTitle(title, y);
+
     const elements = items.map((item) => createPageElement(this.doc, this.options, item));
 
-    let y = PAGE_MARGIN;
     elements.forEach((element) => {
       y = element.render(y);
     });
@@ -40,8 +58,8 @@ class PdfGenerator {
   }
 }
 
-export const generatePdf = (items: DocumentItem[], options: GeneratePdfOptions) => {
+export const generatePdf = (data: PdfFormData, options: GeneratePdfOptions) => {
   const generator = new PdfGenerator(options);
 
-  return generator.generate(items);
+  return generator.generate(data);
 };
