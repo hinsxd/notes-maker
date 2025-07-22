@@ -4,12 +4,6 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -17,7 +11,7 @@ import { FILL_PLACEHOLDER, questionSchema, sectionSchema } from "@/lib/pdf/valid
 
 import { AddItemDropdown } from "./AddItemDropdown";
 import { QuestionForm } from "./QuestionForm";
-import { Edit, FileText, Plus, Save } from "lucide-react";
+import { Edit, FileText, Save } from "lucide-react";
 import { z } from "zod";
 
 type SectionFormProps = {

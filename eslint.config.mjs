@@ -5,6 +5,7 @@ import eslintConfigPrettier from "eslint-config-prettier";
 import importPlugin from "eslint-plugin-import";
 import pluginPromise from "eslint-plugin-promise";
 import pluginReact from "eslint-plugin-react";
+import unusedImports from "eslint-plugin-unused-imports";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -37,6 +38,18 @@ export default [
   pluginReact.configs.flat.recommended, // ? https://github.com/jsx-eslint/eslint-plugin-react
   pluginReact.configs.flat["jsx-runtime"], // ? https://github.com/jsx-eslint/eslint-plugin-react
   eslintConfigPrettier, // ? https://github.com/prettier/eslint-config-prettier
+  {
+    plugins: {
+      "unused-imports": unusedImports,
+    },
+    rules: {
+      "unused-imports/no-unused-imports": "warn",
+      "unused-imports/no-unused-vars": [
+        "warn",
+        { vars: "all", varsIgnorePattern: "^_", args: "after-used", argsIgnorePattern: "^_" },
+      ],
+    },
+  }, // ? https://github.com/sweepline/eslint-plugin-unused-imports
   {
     rules: {
       "no-unused-vars": "off",

@@ -1,11 +1,4 @@
-import {
-  GeneratePdfOptions,
-  LINE_HEIGHT,
-  MultipleChoicesQuestion,
-  PAGE_MARGIN,
-  PageElement,
-  QuestionElement,
-} from "../types";
+import { GeneratePdfOptions, LINE_HEIGHT, MultipleChoicesQuestion, PAGE_MARGIN, QuestionElement } from "../types";
 import { jsPDF } from "jspdf";
 
 const PADDING_BETWEEN_AREAS = 24;

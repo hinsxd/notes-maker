@@ -1,12 +1,4 @@
-import {
-  GeneratePdfOptions,
-  LINE_HEIGHT,
-  LongQuestion,
-  PAGE_MARGIN,
-  PageElement,
-  QUESTION_NUMBER_WIDTH,
-  QuestionElement,
-} from "../types";
+import { GeneratePdfOptions, LINE_HEIGHT, LongQuestion, PAGE_MARGIN, QuestionElement } from "../types";
 import { jsPDF } from "jspdf";
 
 export class LongQuestionElement extends QuestionElement<LongQuestion> {

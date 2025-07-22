@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -81,11 +81,9 @@ export function PdfForm() {
     }
   }, [JSON.stringify(allValues)]);
 
-  const isFormValid = form.state.isValid;
-
   const mutation = useMutation({
     mutationFn: generatePdf,
-    onSuccess: (blob, { isAnswerMode, title }) => {
+    onSuccess: (blob, { isAnswerMode }) => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;

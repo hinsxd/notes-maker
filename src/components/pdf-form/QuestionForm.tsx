@@ -8,14 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  FILL_PLACEHOLDER,
-  longQuestionSchema,
-  multipleChoicesQuestionSchema,
-  questionSchema,
-} from "@/lib/pdf/validation";
+import { FILL_PLACEHOLDER, questionSchema } from "@/lib/pdf/validation";
 import { useForm, useStore } from "@tanstack/react-form";
-import { zodValidator } from "@tanstack/zod-form-adapter";
 
 import { Edit, Plus, Save, X } from "lucide-react";
 import { z } from "zod";

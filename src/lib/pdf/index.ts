@@ -4,7 +4,7 @@ import { createPageElement } from "./createPageElement";
 import { font as NotoSerifJPBold } from "./fonts/NotoSerifJP-Bold-normal";
 import { font as NotoSerifJPMedium } from "./fonts/NotoSerifJP-Medium-normal";
 import { font as NotoSerifJPRegular } from "./fonts/NotoSerifJP-Regular-normal";
-import { DocumentItem, FONT_SIZE, GeneratePdfOptions, LINE_HEIGHT, PAGE_MARGIN } from "./types";
+import { FONT_SIZE, GeneratePdfOptions, LINE_HEIGHT, PAGE_MARGIN } from "./types";
 import { jsPDF } from "jspdf";
 
 export * from "./types";
