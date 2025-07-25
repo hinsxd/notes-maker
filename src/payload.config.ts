@@ -3,6 +3,7 @@ import { vercelPostgresAdapter } from "@payloadcms/db-vercel-postgres";
 import { payloadCloudPlugin } from "@payloadcms/payload-cloud";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 
+import { Exercises } from "./collections/Exercises";
 import { Media } from "./collections/Media";
 import { Users } from "./collections/Users";
 import path from "path";
@@ -20,7 +21,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media],
+  collections: [Users, Media, Exercises],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
