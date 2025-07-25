@@ -1,5 +1,10 @@
-import { fillQuestionBlock, longQuestionBlock, multipleChoicesQuestionBlock } from "./Exercises/blocks/question";
-import { sectionBlock } from "./Exercises/blocks/section";
+import {
+  fillQuestionBlock,
+  longQuestionBlock,
+  multipleChoicesQuestionBlock,
+} from "@/collections/Exercises/blocks/question";
+import { sectionBlock } from "@/collections/Exercises/blocks/section";
+
 import type { CollectionConfig } from "payload";
 
 export const Exercises: CollectionConfig = {
