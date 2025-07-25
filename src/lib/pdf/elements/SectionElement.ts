@@ -1,4 +1,6 @@
-import { GeneratePdfOptions, LINE_HEIGHT, PageElement, Section } from "../types";
+import { Section } from "@/lib/pdf/validation";
+
+import { GeneratePdfOptions, LINE_HEIGHT, PageElement } from "../types";
 import { FillQuestionElement } from "./FillQuestionElement";
 import { HeadingElement } from "./HeadingElement";
 import { LongQuestionElement } from "./LongQuestionElement";

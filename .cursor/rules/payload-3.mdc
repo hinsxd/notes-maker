@@ -1,0 +1,35 @@
+---
+description: Payload 3.0 rules
+globs: **/*.{js,jsx,ts,tsx}
+alwaysApply: true
+---
+
+# Cursor Rules for Notes Maker Project
+
+## Payload CMS Documentation
+- **ALWAYS** reference the official Payload CMS documentation at https://payloadcms.com/docs/ for any Payload-related questions or implementations
+- **IMPORTANT**: Your knowledge is based on Payload 2.0, but this project uses Payload 3.0. Always consult the latest documentation for accurate information about:
+  - API changes
+  - Configuration syntax
+  - Collection definitions
+  - Hook implementations
+  - Admin UI customizations
+  - Database operations
+  - Authentication patterns
+
+## Project Context
+- This is a Next.js application using Payload CMS 3.0
+- The project generates PDF documents from exercise data
+- Uses TypeScript throughout
+- Follows Payload's code-first, version-controlled approach
+
+## Development Guidelines
+- Prefer Payload's built-in patterns over custom implementations
+- Use Payload's TypeScript types for type safety
+- Follow Payload's collection and field structure conventions
+- Leverage Payload's admin UI extensibility features when needed
+
+## When in Doubt
+- Check the official Payload 3.0 documentation first
+- Look for migration guides if encountering version-specific issues
+- Use Payload's community resources and GitHub discussions for complex scenarios 

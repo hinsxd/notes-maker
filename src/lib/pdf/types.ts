@@ -1,38 +1,6 @@
+import { Question } from "@/lib/pdf/validation";
+
 import { jsPDF } from "jspdf";
-
-// -----------------
-// Core Types
-// -----------------
-
-export type LongQuestion = {
-  type: "LongQuestion";
-  questionText: string;
-  answer: string;
-};
-
-export type FillQuestion = {
-  type: "Fill";
-  questionText: string;
-  answer: string;
-};
-
-export type MultipleChoicesQuestion = {
-  type: "MultipleChoices";
-  questionText: string;
-  choices: string[];
-  answer: string;
-};
-
-export type Question = LongQuestion | MultipleChoicesQuestion | FillQuestion;
-
-export type Section = {
-  type: "section";
-  description: string;
-  exampleQuestions: Question[];
-  questions: Question[];
-};
-
-export type DocumentItem = Question | Section;
 
 export type GeneratePdfOptions = {
   isAnswerMode: boolean;

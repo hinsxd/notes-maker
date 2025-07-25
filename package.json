@@ -1,6 +1,7 @@
 {
   "name": "@hinsxd/notes-maker",
   "version": "1.0.0",
+  "type": "module",
   "private": false,
   "license": "MIT",
   "scripts": {
@@ -18,6 +19,7 @@
     "@payloadcms/next": "^3.48.0",
     "@payloadcms/payload-cloud": "^3.48.0",
     "@payloadcms/richtext-lexical": "^3.48.0",
+    "@payloadcms/ui": "^3.49.0",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
     "@radix-ui/react-aspect-ratio": "^1.1.7",

@@ -15,6 +15,12 @@ export const sectionBlock: Block = {
       label: "Description",
     },
     {
+      name: "exampleQuestions",
+      type: "blocks",
+      minRows: 0,
+      blocks: [longQuestionBlock, fillQuestionBlock, multipleChoicesQuestionBlock],
+    },
+    {
       name: "questions",
       type: "blocks",
       minRows: 1,

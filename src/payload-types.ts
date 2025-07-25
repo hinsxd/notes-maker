@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    exercises: Exercise;
     "payload-locked-documents": PayloadLockedDocument;
     "payload-preferences": PayloadPreference;
     "payload-migrations": PayloadMigration;
@@ -77,12 +78,13 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    exercises: ExercisesSelect<false> | ExercisesSelect<true>;
     "payload-locked-documents": PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     "payload-preferences": PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     "payload-migrations": PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   globals: {};
   globalsSelect: {};
@@ -118,7 +120,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -142,7 +144,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -158,23 +160,90 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exercises".
+ */
+export interface Exercise {
+  id: number;
+  title: string;
+  items?: (LongQuestionBlock | FillQuestionBlock | MultipleChoicesQuestionBlock | SectionBlock)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LongQuestionBlock".
+ */
+export interface LongQuestionBlock {
+  questionText: string;
+  answer: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: "LongQuestion";
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FillQuestionBlock".
+ */
+export interface FillQuestionBlock {
+  /**
+   * Use "<<>>" as a placeholder for the blank.
+   */
+  questionText: string;
+  answer: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: "Fill";
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MultipleChoicesQuestionBlock".
+ */
+export interface MultipleChoicesQuestionBlock {
+  questionText: string;
+  choices: {
+    choice: string;
+    id?: string | null;
+  }[];
+  answer: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: "MultipleChoices";
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SectionBlock".
+ */
+export interface SectionBlock {
+  description: string;
+  exampleQuestions?: (LongQuestionBlock | FillQuestionBlock | MultipleChoicesQuestionBlock)[] | null;
+  questions?: (LongQuestionBlock | FillQuestionBlock | MultipleChoicesQuestionBlock)[] | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: "section";
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: "users";
-        value: string | User;
+        value: number | User;
       } | null)
     | ({
         relationTo: "media";
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: "exercises";
+        value: number | Exercise;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: "users";
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -184,10 +253,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: "users";
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -207,7 +276,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -252,6 +321,82 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "exercises_select".
+ */
+export interface ExercisesSelect<T extends boolean = true> {
+  title?: T;
+  items?:
+    | T
+    | {
+        LongQuestion?: T | LongQuestionBlockSelect<T>;
+        Fill?: T | FillQuestionBlockSelect<T>;
+        MultipleChoices?: T | MultipleChoicesQuestionBlockSelect<T>;
+        section?: T | SectionBlockSelect<T>;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LongQuestionBlock_select".
+ */
+export interface LongQuestionBlockSelect<T extends boolean = true> {
+  questionText?: T;
+  answer?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FillQuestionBlock_select".
+ */
+export interface FillQuestionBlockSelect<T extends boolean = true> {
+  questionText?: T;
+  answer?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MultipleChoicesQuestionBlock_select".
+ */
+export interface MultipleChoicesQuestionBlockSelect<T extends boolean = true> {
+  questionText?: T;
+  choices?:
+    | T
+    | {
+        choice?: T;
+        id?: T;
+      };
+  answer?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SectionBlock_select".
+ */
+export interface SectionBlockSelect<T extends boolean = true> {
+  description?: T;
+  exampleQuestions?:
+    | T
+    | {
+        LongQuestion?: T | LongQuestionBlockSelect<T>;
+        Fill?: T | FillQuestionBlockSelect<T>;
+        MultipleChoices?: T | MultipleChoicesQuestionBlockSelect<T>;
+      };
+  questions?:
+    | T
+    | {
+        LongQuestion?: T | LongQuestionBlockSelect<T>;
+        Fill?: T | FillQuestionBlockSelect<T>;
+        MultipleChoices?: T | MultipleChoicesQuestionBlockSelect<T>;
+      };
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

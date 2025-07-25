@@ -1,4 +1,6 @@
-import { GeneratePdfOptions, LINE_HEIGHT, LongQuestion, PAGE_MARGIN, QuestionElement } from "../types";
+import { LongQuestion } from "@/lib/pdf/validation";
+
+import { GeneratePdfOptions, LINE_HEIGHT, PAGE_MARGIN, QuestionElement } from "../types";
 import { jsPDF } from "jspdf";
 
 export class LongQuestionElement extends QuestionElement<LongQuestion> {

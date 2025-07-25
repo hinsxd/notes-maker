@@ -9,6 +9,8 @@ export const longQuestionSchema = z.object({
   answer: z.string().min(1, "答えは必須です"),
 });
 
+export type LongQuestion = z.infer<typeof longQuestionSchema>;
+
 export const fillQuestionSchema = z.object({
   type: z.literal("Fill"),
   questionText: z
@@ -17,6 +19,7 @@ export const fillQuestionSchema = z.object({
     .includes(FILL_PLACEHOLDER, { message: `質問文に"${FILL_PLACEHOLDER}"を含めてください` }),
   answer: z.string().min(1, "答えは必須です"),
 });
+export type FillQuestion = z.infer<typeof fillQuestionSchema>;
 
 export const multipleChoicesQuestionSchema = z.object({
   type: z.literal("MultipleChoices"),
@@ -25,11 +28,15 @@ export const multipleChoicesQuestionSchema = z.object({
   answer: z.string().min(1, "正解は必須です"),
 });
 
+export type MultipleChoicesQuestion = z.infer<typeof multipleChoicesQuestionSchema>;
+
 export const questionSchema = z.discriminatedUnion("type", [
   longQuestionSchema,
   multipleChoicesQuestionSchema,
   fillQuestionSchema,
 ]);
+
+export type Question = z.infer<typeof questionSchema>;
 
 // Section schema
 export const sectionSchema = z.object({
@@ -39,8 +46,11 @@ export const sectionSchema = z.object({
   questions: z.array(questionSchema),
 });
 
+export type Section = z.infer<typeof sectionSchema>;
+
 // Document item schema
 export const documentItemSchema = z.discriminatedUnion("type", [questionSchema, sectionSchema]);
+export type DocumentItem = z.infer<typeof documentItemSchema>;
 
 // Form schema
 export const pdfFormSchema = z.object({

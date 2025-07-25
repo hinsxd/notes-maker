@@ -6,13 +6,6 @@ export const Exercises: CollectionConfig = {
   slug: "exercises",
   admin: {
     useAsTitle: "title",
-
-    components: {
-      edit: {
-        beforeDocumentControls: ["@/components/GeneratePdfButton#GeneratePdfButton"],
-        // editMenuItems: ["@/components/GeneratePdfButton"],
-      },
-    },
   },
   fields: [
     {

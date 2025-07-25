@@ -1,4 +1,6 @@
-import { FillQuestion, GeneratePdfOptions, LINE_HEIGHT, PAGE_MARGIN, QuestionElement } from "../types";
+import { FillQuestion } from "@/lib/pdf/validation";
+
+import { GeneratePdfOptions, LINE_HEIGHT, PAGE_MARGIN, QuestionElement } from "../types";
 import { FILL_PLACEHOLDER } from "../validation";
 import { jsPDF } from "jspdf";
 
