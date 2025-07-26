@@ -6,7 +6,6 @@ import { Button, PopupList } from "@payloadcms/ui";
 
 export const GeneratePdfButton = () => {
   const { segments } = useParams();
-  console.log(segments);
 
   const idStr = segments?.at(-1);
   const parsedId = idStr ? parseInt(idStr) : null;
@@ -19,31 +18,7 @@ export const GeneratePdfButton = () => {
       return;
     }
 
-    try {
-      const res = await fetch(`/api/generate-pdf?id=${id}&isAnswerMode=${isAnswerMode}`);
-
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.error || "Failed to generate PDF");
-      }
-
-      const blob = await res.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `exercise-${id}${isAnswerMode ? "-answers" : ""}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      if (error instanceof Error) {
-        alert(error.message);
-      } else {
-        alert("An unknown error occurred.");
-      }
-      console.error(error);
-    }
+    window.open(`/api/generate-pdf?id=${id}&isAnswerMode=${isAnswerMode}`, "_blank");
   };
 
   return (
