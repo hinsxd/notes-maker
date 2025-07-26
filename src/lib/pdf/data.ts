@@ -1,4 +1,4 @@
-import { LongQuestion, MultipleChoicesQuestion } from "./types";
+import { LongQuestion, MultipleChoicesQuestion } from "@/lib/pdf/validation";
 
 export const generateDummyLongQuestions = (count: number): LongQuestion[] => {
   return Array.from({ length: count }, (_, i) => ({

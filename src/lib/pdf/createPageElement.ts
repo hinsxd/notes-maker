@@ -1,8 +1,10 @@
+import { DocumentItem } from "@/lib/pdf/validation";
+
 import { FillQuestionElement } from "./elements/FillQuestionElement";
 import { LongQuestionElement } from "./elements/LongQuestionElement";
 import { MultipleChoicesQuestionElement } from "./elements/MultipleChoicesQuestionElement";
 import { SectionElement } from "./elements/SectionElement";
-import { DocumentItem, GeneratePdfOptions, PageElement } from "./types";
+import { GeneratePdfOptions, PageElement } from "./types";
 import { jsPDF } from "jspdf";
 
 export function createPageElement(doc: jsPDF, options: GeneratePdfOptions, item: DocumentItem): PageElement {
